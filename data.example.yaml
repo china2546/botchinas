@@ -1,0 +1,20 @@
+# Ultralytics YOLO Dataset Configuration File
+# -----------------------------------------------
+# Path configuration:
+# 'path' is the root directory of the dataset (can be relative to this yaml or absolute)
+path: dataset
+
+# Subdirectories for train and validation sets
+train: images/train
+val: images/val
+# test: images/test  # Optional
+
+# Class names dictionary (0-indexed)
+# Option A: Single class (all monsters + bosses grouped together)
+names:
+  0: monster
+
+# Option B: Separate normal monsters and bosses (uncomment if you want to distinguish them)
+# names:
+#   0: monster
+#   1: boss

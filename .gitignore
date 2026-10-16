@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# PyTorch / YOLO artifacts
+*.pt
+*.pth
+*.onnx
+*.engine
+*.tflite
+runs/
+wandb/
+
+# Dataset and Media (avoid bloating Git repo)
+videos/
+*.mp4
+*.mkv
+*.avi
+*.mov
+raw_frames/
+extracted_frames/
+dataset/
+datasets/
+
+# OS and Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
