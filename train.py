@@ -49,8 +49,14 @@ def train(args):
         print("Please ensure your dataset and data.yaml are prepared.")
         sys.exit(1)
 
-    print(f"Loading base model: {args.model}")
-    model = YOLO(args.model)
+    model_name = args.model
+    if model_name.endswith(".py") and not Path(model_name).exists():
+        suggested = model_name[:-3] + ".pt"
+        print(f"[Notice] Model '{model_name}' ends with '.py'. Auto-correcting to '{suggested}'...")
+        model_name = suggested
+
+    print(f"Loading base model: {model_name}")
+    model = YOLO(model_name)
 
     print("\nStarting YOLO Training...")
     print(f" - Data YAML: {data_yaml}")
