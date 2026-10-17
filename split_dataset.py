@@ -32,8 +32,13 @@ def split_data(
     random.seed(seed)
     target_path = Path(target_dir)
 
-    img_path = None
-    lbl_path = None
+    def find_subdir(parent: Path, target_name: str) -> Path | None:
+        if not parent.exists() or not parent.is_dir():
+            return None
+        for item in parent.iterdir():
+            if item.is_dir() and item.name.lower() == target_name.lower():
+                return item
+        return None
 
     # Determine image and label directory locations
     if images_dir and labels_dir:
@@ -41,23 +46,30 @@ def split_data(
         lbl_path = Path(labels_dir)
     elif source_dir:
         src = Path(source_dir)
-        if (src / "images").exists() and (src / "labels").exists():
-            img_path = src / "images"
-            lbl_path = src / "labels"
-        elif (src / "images").exists():
-            img_path = src / "images"
+        sub_img = find_subdir(src, "images")
+        sub_lbl = find_subdir(src, "labels")
+        if sub_img and sub_lbl:
+            img_path = sub_img
+            lbl_path = sub_lbl
+        elif sub_img:
+            img_path = sub_img
             lbl_path = src
         else:
             img_path = src
             lbl_path = src
     else:
-        # Default fallback check in current working directory
-        if Path("images").exists() and Path("labels").exists():
-            img_path = Path("images")
-            lbl_path = Path("labels")
-        elif Path("raw_data").exists():
-            img_path = Path("raw_data/images") if Path("raw_data/images").exists() else Path("raw_data")
-            lbl_path = Path("raw_data/labels") if Path("raw_data/labels").exists() else Path("raw_data")
+        # Check current working directory or common subdirectories like 'train'
+        train_dir = find_subdir(Path("."), "train")
+        if train_dir:
+            sub_img = find_subdir(train_dir, "images")
+            sub_lbl = find_subdir(train_dir, "labels")
+            if sub_img and sub_lbl:
+                img_path = sub_img
+                lbl_path = sub_lbl
+
+        if not img_path:
+            img_path = find_subdir(Path("."), "images")
+            lbl_path = find_subdir(Path("."), "labels")
 
     if not img_path or not img_path.exists():
         print(f"[Error] Images directory not found: {img_path}")
