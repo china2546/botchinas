@@ -4,3 +4,4 @@ tqdm>=4.66.0
 pyyaml>=6.0
 matplotlib>=3.7.0
 pillow>=10.0.0
+mss>=9.0.0
