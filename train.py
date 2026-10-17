@@ -145,8 +145,8 @@ def main():
     parser.add_argument(
         "--workers",
         type=int,
-        default=8,
-        help="Number of dataloader worker threads (default: 8)."
+        default=2,
+        help="Number of dataloader worker threads (default: 2 for Windows stability)."
     )
     parser.add_argument(
         "--patience",
