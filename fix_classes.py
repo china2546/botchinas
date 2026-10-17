@@ -88,6 +88,15 @@ def scan_classes(dataset_dir: str = "dataset", source_yaml: str = None):
     with open(target_yaml, "w", encoding="utf-8") as f:
         yaml.dump(yaml_data, f, default_flow_style=False, sort_keys=False)
 
+    # Remove old YOLO label cache files so YOLO rescans the labels with new classes
+    cache_files = list(labels_dir.rglob("*.cache"))
+    for cache in cache_files:
+        try:
+            cache.unlink()
+            print(f"Cleared old cache: {cache.name}")
+        except Exception:
+            pass
+
     print("\n" + "=" * 60)
     print(f"Successfully updated '{target_yaml}' with {len(names_dict)} classes:")
     for k, v in names_dict.items():
